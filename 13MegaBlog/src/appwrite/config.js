@@ -1,6 +1,6 @@
 import conf from "../conf/conf";
 
-import { Client, Databases, Storage, Query, ID} from 'appwrite';
+import {Client, Databases, Storage, Query, ID} from 'appwrite';
 
 export class Service{
     client = new Client();
@@ -9,21 +9,23 @@ export class Service{
 
     constructor() {
         this.client
-            .setEndpoint(conf.appwriteUrl)
-            .setProject(conf.appwriteProjectId)
-            this.databases = new Databases(this.client);
-            this.bucket = new Storage(this.client);
+        .setEndpoint(conf.appwriteUrl)
+        .setProject(conf.appwriteProjectId)
+        this.databases = new Databases(this.client);
+        this.bucket = new Storage(this.client);
     }
     
-    async createPost({title, slug, content, featuredImage, status, userId}){
+    async createPost({ title, slug, content, featuredImage, status, userId }){
         try {
+            // Log the parameters to verify they are correct
+            console.log("createPost parameters:", { title, slug, content, featuredImage, status, userId });
+
             return await this.databases.createDocument(
                 conf.appwriteDatabseID,
                 conf.appwritecollectionID,
                 slug,
                 {
                     title,
-                    slug,
                     content,
                     featuredImage,
                     status,
@@ -38,7 +40,7 @@ export class Service{
 
     async updatePost(slug, {title, content, featuredImage, status}){
     try {
-        return await this.datbases.updateDocument(
+        return await this.databases.updateDocument(
             conf.appwriteDatabseID,
             conf.appwritecollectionID,
             slug,
@@ -68,7 +70,7 @@ export class Service{
             return false;
         }
     }
-
+    
     async getPost(slug){
         try {
             return await this.databases.getDocument(
@@ -100,20 +102,21 @@ export class Service{
         }
     }
 
-    //File Uplaod Service
-
-    async uploadFile(file){
-        try {
+    
+    // File Upload Service
+    async uploadFile(file) {
+        try {    
             return await this.bucket.createFile(
                 conf.appwritebucketID,
                 ID.unique(),
-                file
+                file,
             );
         } catch (error) {
             console.log("Service :: uploadFile :: error", error);
             return false;
         }
     }
+
 
     async deleteFile(fileId){
         try {
@@ -128,14 +131,21 @@ export class Service{
         }
     }
 
-    getFilePreview(fileId){
+    getFilePreview(fileId) {
+        if (!fileId) {
+            throw new Error('Missing fileId');
+        }
+        if (!conf.appwritebucketID) {
+            throw new Error('Missing bucket ID');
+        }
         return this.bucket.getFilePreview(
             conf.appwritebucketID,
             fileId
         );
     }
-
 }
+
+
 
 
 const service = new Service();

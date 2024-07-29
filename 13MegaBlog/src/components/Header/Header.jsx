@@ -35,7 +35,8 @@ function Header() {
       active: authStatus,
   },
   ]
-
+  
+  console.log(authStatus);
   return (
     <header className='py-3 shadow bg-gray-500'>
       <Container>
@@ -45,7 +46,7 @@ function Header() {
             <Logo width='70px' />
             </Link>   
           </div>
-          <ul className='flex'>
+          <ul className='flex ml-auto'>
             {navItems.map((item) => (
               item.active ? (
                 <li key={item.name}>
