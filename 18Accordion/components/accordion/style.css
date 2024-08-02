@@ -1,0 +1,41 @@
+.wrapper {
+    width: 100vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.Accordion {
+    width: 500px;
+}
+
+.item {
+    background: #614161;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+}
+
+.title {
+    color: aliceblue;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.content{
+    color: aliceblue;
+    height: auto;
+}
+
+.button {
+    background: #0d0c0d;
+    color: aliceblue;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    
+}
